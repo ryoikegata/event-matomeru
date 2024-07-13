@@ -1,12 +1,7 @@
-import { FC } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
-type Props = {
-  onClick: () => void;
-  handleOpenUserList: (event: React.MouseEvent<HTMLButtonElement>) => void;
-};
-
-export const EditableEventBlock: FC<Props> = () => {
+export const EditableEventBlock = () => {
   return (
     // TODO: 各値はpropsで受け取る
     <div
@@ -31,9 +26,11 @@ export const EditableEventBlock: FC<Props> = () => {
         </div>
       </div>
       <div className="flex flex-col items-end gap-y-4 mt-4">
-          <button className="text-xs underline">
-            参加者一覧を見る
-          </button>
+          <Link href={'/tenant-owner/userStatus'}>
+            <button className="text-xs underline">
+              参加者一覧を見る
+            </button>
+          </Link>
           <button className="text-xs underline">
             編集
           </button>
