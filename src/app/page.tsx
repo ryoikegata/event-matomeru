@@ -4,9 +4,32 @@ import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import { EventBlock } from "@/components/atoms/EventBlock/page";
 import Link from "next/link";
+import { SwipeableDrawer } from "@/components/organisms/SwipeableDrawer/page";
+import { AttendForm } from "@/components/organisms/AttendForm/page";
 
 export default function Home() {
   const [select, setSelect] = useState<string>("all");
+  const [opened, setOpened] = useState(false);
+
+  const beforeEnter = () => {
+    console.log("beforeEnter");
+  };
+
+  const afterEnter = () => {
+    console.log("afterEnter");
+  };
+
+  const beforeLeave = () => {
+    console.log("beforeLeave");
+  };
+
+  const afterLeave = () => {
+    console.log("afterLeave");
+  };
+
+  const scrollDrawer = () => {
+    console.log("scrollDrawer");
+  };
   return (
     <>
       <Header />
@@ -56,6 +79,7 @@ export default function Home() {
             未回答
           </button>
         </div>
+        {/* TODO: データを取得したらコメントアウト解除 */}
         {/* <div className="flex flex-1 w-full -mt-[152px] items-center justify-center">
           <div className="text-[#808080] text-center">
             <p className="font-semibold text-2xl">NO EVENT</p>
@@ -64,13 +88,24 @@ export default function Home() {
           </div>
         </div> */}
         <div className="mt-4">
-          <EventBlock />
+          <EventBlock onClick={() => setOpened(true)} />
         </div>
-        <Link href={'/create'}>
-          <button className="absolute right-5 bottom-5 w-16 h-16 rounded-full bg-[#0584c7] text-white shadow-md">
-            <AddIcon />
-          </button>
-        </Link>
+        <button className="absolute right-5 bottom-5 w-16 h-16 rounded-full bg-[#0584c7] text-white shadow-md">
+          <AddIcon />
+        </button>
+        <SwipeableDrawer
+          opened={opened}
+          speed={300}
+          easingType="easeOutCubic"
+          onClose={() => setOpened(false)}
+          onBeforeEnter={() => beforeEnter()}
+          onAfterEnter={() => afterEnter()}
+          onBeforeLeave={() => beforeLeave()}
+          onAfterLeave={() => afterLeave()}
+          onScroll={() => scrollDrawer()}
+        >
+          <AttendForm />
+        </SwipeableDrawer>
       </main>
     </>
   );
