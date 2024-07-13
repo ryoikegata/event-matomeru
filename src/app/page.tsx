@@ -6,12 +6,13 @@ import { EventBlock } from "@/components/atoms/EventBlock/page";
 import { SwipeableDrawer } from "@/components/organisms/SwipeableDrawer/page";
 import { AttendForm } from "@/components/organisms/AttendForm/page";
 import { SimpleDialog } from "@/components/organisms/Dialog/page";
-import Link from "next/link";
+import { CreateEventForm } from "@/components/organisms/CreateEventForm/page";
 
 export default function Home() {
   const [select, setSelect] = useState<string>("all");
   const [opened, setOpened] = useState(false);
   const [openUserList, setOpenUserList] = useState(false);
+  const [openCreateEvent, setOpenCreateEvent] = useState(false);
 
   const handleOpenUserList = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -84,11 +85,12 @@ export default function Home() {
             handleOpenUserList={handleOpenUserList}
           />
         </div>
-        <Link href={'/create'}>
-          <button className="absolute right-5 bottom-5 w-16 h-16 rounded-full bg-[#0584c7] text-white shadow-md">
-            <AddIcon />
-          </button>
-        </Link>
+        <button
+          onClick={() => setOpenCreateEvent(true)}
+          className="absolute right-5 bottom-5 w-16 h-16 rounded-full bg-[#0584c7] text-white shadow-md"
+        >
+          <AddIcon />
+        </button>
         <SwipeableDrawer
           opened={opened}
           speed={300}
@@ -96,6 +98,14 @@ export default function Home() {
           onClose={() => setOpened(false)}
         >
           <AttendForm />
+        </SwipeableDrawer>
+        <SwipeableDrawer
+          opened={openCreateEvent}
+          speed={300}
+          easingType="easeOutCubic"
+          onClose={() => setOpenCreateEvent(false)}
+        >
+          <CreateEventForm />
         </SwipeableDrawer>
         <SimpleDialog
           open={openUserList}
