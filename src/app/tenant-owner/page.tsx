@@ -2,7 +2,7 @@
 import { Header } from "@/layout/Header/page";
 import AddIcon from "@mui/icons-material/Add";
 import { useCallback, useState } from "react";
-import { EditableEventBlock } from "@/components/atoms/EventBlock/page";
+import { EditableEventBlock } from "@/components/atoms/EditableEventBlock/page";
 import { SwipeableDrawer } from "@/components/organisms/SwipeableDrawer/page";
 import { AttendForm } from "@/components/organisms/AttendForm/page";
 import { SimpleDialog } from "@/components/organisms/Dialog/page";
