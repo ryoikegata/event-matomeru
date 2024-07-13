@@ -11,12 +11,14 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@hookform/resolvers": "^3.9.0",
     "@mui/icons-material": "^5.16.1",
     "@supabase/auth-ui-react": "^0.4.7",
     "@supabase/supabase-js": "^2.44.3",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.52.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {
