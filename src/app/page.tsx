@@ -1,11 +1,25 @@
 "use client";
 import { Header } from "@/layout/Header/page";
 import AddIcon from "@mui/icons-material/Add";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { EventBlock } from "@/components/atoms/EventBlock/page";
+import { SwipeableDrawer } from "@/components/organisms/SwipeableDrawer/page";
+import { AttendForm } from "@/components/organisms/AttendForm/page";
+import { SimpleDialog } from "@/components/organisms/Dialog/page";
 
 export default function Home() {
   const [select, setSelect] = useState<string>("all");
+  const [opened, setOpened] = useState(false);
+  const [openUserList, setOpenUserList] = useState(false);
+
+  const handleOpenUserList = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+      setOpenUserList(true);
+    },
+    []
+  );
+
   return (
     <>
       <Header />
@@ -55,6 +69,7 @@ export default function Home() {
             未回答
           </button>
         </div>
+        {/* TODO: データを取得したらコメントアウト解除 */}
         {/* <div className="flex flex-1 w-full -mt-[152px] items-center justify-center">
           <div className="text-[#808080] text-center">
             <p className="font-semibold text-2xl">NO EVENT</p>
@@ -63,11 +78,26 @@ export default function Home() {
           </div>
         </div> */}
         <div className="mt-4">
-          <EventBlock />
+          <EventBlock
+            onClick={() => setOpened(true)}
+            handleOpenUserList={handleOpenUserList}
+          />
         </div>
         <button className="absolute right-5 bottom-5 w-16 h-16 rounded-full bg-[#0584c7] text-white shadow-md">
           <AddIcon />
         </button>
+        <SwipeableDrawer
+          opened={opened}
+          speed={300}
+          easingType="easeOutCubic"
+          onClose={() => setOpened(false)}
+        >
+          <AttendForm />
+        </SwipeableDrawer>
+        <SimpleDialog
+          open={openUserList}
+          onClose={() => setOpenUserList(false)}
+        />
       </main>
     </>
   );

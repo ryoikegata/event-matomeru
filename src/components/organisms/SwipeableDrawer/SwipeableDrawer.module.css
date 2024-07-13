@@ -1,0 +1,85 @@
+.container {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: var(--swipeable-drawer-z-index, unset);
+  touch-action: none;
+}
+
+.container::before,
+.container::after {
+  content: "";
+  width: 1px;
+  height: calc(100vh + 1px);
+  display: flex;
+}
+
+.background {
+  background-color: var(--swipeable-drawer-background-color, rgb(0 0 0 / 60%));
+  height: 100vh;
+  height: 100dvh;
+  left: 0;
+  opacity: var(--opacity);
+  position: fixed;
+  top: 0;
+  width: 100vw;
+}
+
+.drawer {
+  background-color: var(--swipeable-drawer-container-color, #fff);
+  border-radius: var(--drawer-radius, 3px) var(--drawer-radius, 3px) 0 0;
+  bottom: 0;
+  box-shadow: 0 -2px 20px 0 rgb(0 0 0 / calc(0.4 * var(--opacity)));
+  box-sizing: border-box;
+  display: block;
+  left: 0;
+  max-height: calc(100% - var(--gap));
+  padding: 0;
+  position: fixed;
+  transform: translate3d(0, var(--delta-y), 0);
+  width: 100%;
+  will-change: transform;
+}
+
+.closeButton {
+  height: var(--gap);
+  left: 50%;
+  position: absolute;
+  top: calc(-1 * var(--gap));
+  transform: translateX(-50%);
+  width: 35px;
+
+  &::before,
+  &::after {
+    background-color: var(--swipeable-drawer-close-button-color, #fff);
+    border-radius: 10px;
+    content: "";
+    display: block;
+    height: 4px;
+    position: absolute;
+    top: 13px;
+    width: 20px;
+  }
+
+  &::before {
+    left: 0;
+    transform: rotate(var(--rotate));
+  }
+
+  &::after {
+    right: 0;
+    transform: rotate(calc(-1 * var(--rotate)));
+  }
+}
+
+.body {
+  height: 100%;
+  height: calc(100dvh - var(--gap));
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
