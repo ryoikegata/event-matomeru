@@ -1,5 +1,4 @@
 "use client";
-import { Header } from "@/layout/Header/page";
 import AddIcon from "@mui/icons-material/Add";
 import { useCallback, useState } from "react";
 import { EditableEventBlock } from "@/components/atoms/EditableEventBlock/page";
@@ -8,12 +7,13 @@ import { AttendForm } from "@/components/organisms/AttendForm/page";
 import { SimpleDialog } from "@/components/organisms/Dialog/page";
 import Link from "next/link";
 import { UserStatusBlock } from "@/components/atoms/UserStatusBlock/page";
+import { TenantHeader } from "@/layout/TenantHeader/Page";
 
 export default function UserStatus() {
 
   return (
     <>
-      <Header />
+      <TenantHeader />
       {/* TODO: データがないときのみjustify-centerをつける */}
       <main className="flex min-h-screen flex-col px-6 mt-20">
         <p className="pt-2 text-lg">ようこそ！ テナント名：本松達裕さん</p>
