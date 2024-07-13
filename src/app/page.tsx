@@ -1,34 +1,25 @@
 "use client";
 import { Header } from "@/layout/Header/page";
 import AddIcon from "@mui/icons-material/Add";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { EventBlock } from "@/components/atoms/EventBlock/page";
 import { SwipeableDrawer } from "@/components/organisms/SwipeableDrawer/page";
 import { AttendForm } from "@/components/organisms/AttendForm/page";
+import { SimpleDialog } from "@/components/organisms/Dialog/page";
 
 export default function Home() {
   const [select, setSelect] = useState<string>("all");
   const [opened, setOpened] = useState(false);
+  const [openUserList, setOpenUserList] = useState(false);
 
-  const beforeEnter = () => {
-    console.log("beforeEnter");
-  };
+  const handleOpenUserList = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+      setOpenUserList(true);
+    },
+    []
+  );
 
-  const afterEnter = () => {
-    console.log("afterEnter");
-  };
-
-  const beforeLeave = () => {
-    console.log("beforeLeave");
-  };
-
-  const afterLeave = () => {
-    console.log("afterLeave");
-  };
-
-  const scrollDrawer = () => {
-    console.log("scrollDrawer");
-  };
   return (
     <>
       <Header />
@@ -87,7 +78,10 @@ export default function Home() {
           </div>
         </div> */}
         <div className="mt-4">
-          <EventBlock onClick={() => setOpened(true)} />
+          <EventBlock
+            onClick={() => setOpened(true)}
+            handleOpenUserList={handleOpenUserList}
+          />
         </div>
         <button className="absolute right-5 bottom-5 w-16 h-16 rounded-full bg-[#0584c7] text-white shadow-md">
           <AddIcon />
@@ -97,14 +91,13 @@ export default function Home() {
           speed={300}
           easingType="easeOutCubic"
           onClose={() => setOpened(false)}
-          onBeforeEnter={() => beforeEnter()}
-          onAfterEnter={() => afterEnter()}
-          onBeforeLeave={() => beforeLeave()}
-          onAfterLeave={() => afterLeave()}
-          onScroll={() => scrollDrawer()}
         >
           <AttendForm />
         </SwipeableDrawer>
+        <SimpleDialog
+          open={openUserList}
+          onClose={() => setOpenUserList(false)}
+        />
       </main>
     </>
   );

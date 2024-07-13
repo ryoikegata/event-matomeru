@@ -3,9 +3,10 @@ import Image from "next/image";
 
 type Props = {
   onClick: () => void;
+  handleOpenUserList: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-export const EventBlock: FC<Props> = ({ onClick }) => {
+export const EventBlock: FC<Props> = ({ onClick, handleOpenUserList }) => {
   return (
     // TODO: 各値はpropsで受け取る
     <div
@@ -32,7 +33,9 @@ export const EventBlock: FC<Props> = ({ onClick }) => {
           </div>
         </div>
 
-        <button className="text-xs underline">参加者一覧を見る</button>
+        <button className="text-xs underline" onClick={handleOpenUserList}>
+          参加者一覧を見る
+        </button>
       </div>
     </div>
   );
