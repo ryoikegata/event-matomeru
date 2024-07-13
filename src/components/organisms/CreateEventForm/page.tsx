@@ -4,6 +4,9 @@ import { EventSchema } from "@/services/schema";
 import { EventType } from "@/services/schema/types";
 import { supabase } from "@/utils/supabase/supabase";
 import { useFetchTenant } from "@/hooks/useFetchTenant";
+import { redirect } from "next/navigation";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export const CreateEventForm = () => {
   const {
@@ -18,14 +21,11 @@ export const CreateEventForm = () => {
 
   const onSubmit = async (data: EventType) => {
     const { data: event, error } = await supabase.from("events").insert({'tenant_id': tenant?.id,...data});
-    let redirectRequired = false;
     if (error) {
       console.log(error);
     } else {
-      console.log(event);
-      redirectRequired = true;
-    }
-    if (redirectRequired) {
+      console.log("Event created successfully:", event);
+      window.location.reload(); // ページをリロードする
     }
   };
 
