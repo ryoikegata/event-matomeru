@@ -2,24 +2,13 @@
 import { Header } from "@/layout/Header/page";
 import AddIcon from "@mui/icons-material/Add";
 import { useCallback, useState } from "react";
-import { EditableEventBlock, EventBlock } from "@/components/atoms/EventBlock/page";
+import { EditableEventBlock } from "@/components/atoms/EventBlock/page";
 import { SwipeableDrawer } from "@/components/organisms/SwipeableDrawer/page";
 import { AttendForm } from "@/components/organisms/AttendForm/page";
 import { SimpleDialog } from "@/components/organisms/Dialog/page";
 import Link from "next/link";
 
 export default function Home() {
-  const [select, setSelect] = useState<string>("all");
-  const [opened, setOpened] = useState(false);
-  const [openUserList, setOpenUserList] = useState(false);
-
-  const handleOpenUserList = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      event.stopPropagation();
-      setOpenUserList(true);
-    },
-    []
-  );
 
   return (
     <>
@@ -38,22 +27,8 @@ export default function Home() {
         </div> */}
         <div className="mt-4">
           <EditableEventBlock
-            onClick={() => setOpened(true)}
-            handleOpenUserList={handleOpenUserList}
           />
         </div>
-        <SwipeableDrawer
-          opened={opened}
-          speed={300}
-          easingType="easeOutCubic"
-          onClose={() => setOpened(false)}
-        >
-          <AttendForm />
-        </SwipeableDrawer>
-        <SimpleDialog
-          open={openUserList}
-          onClose={() => setOpenUserList(false)}
-        />
       </main>
     </>
   );

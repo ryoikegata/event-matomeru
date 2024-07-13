@@ -6,12 +6,11 @@ type Props = {
   handleOpenUserList: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-export const EditableEventBlock: FC<Props> = ({ onClick, handleOpenUserList }) => {
+export const EditableEventBlock: FC<Props> = () => {
   return (
     // TODO: 各値はpropsで受け取る
     <div
       className="border-t-2 border-r-2 border-b-2 border-l-4 border-[#0584c7] py-2 px-4 rounded-lg cursor-pointer flex justify-between"
-      onClick={onClick}
     >
       <div>
         <div className="flex justify-between">
