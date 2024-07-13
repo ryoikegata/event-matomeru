@@ -6,6 +6,7 @@ import { EventBlock } from "@/components/atoms/EventBlock/page";
 import { SwipeableDrawer } from "@/components/organisms/SwipeableDrawer/page";
 import { AttendForm } from "@/components/organisms/AttendForm/page";
 import { SimpleDialog } from "@/components/organisms/Dialog/page";
+import Link from "next/link";
 
 export default function Home() {
   const [select, setSelect] = useState<string>("all");
@@ -83,9 +84,11 @@ export default function Home() {
             handleOpenUserList={handleOpenUserList}
           />
         </div>
-        <button className="absolute right-5 bottom-5 w-16 h-16 rounded-full bg-[#0584c7] text-white shadow-md">
-          <AddIcon />
-        </button>
+        <Link href={'/create'}>
+          <button className="absolute right-5 bottom-5 w-16 h-16 rounded-full bg-[#0584c7] text-white shadow-md">
+            <AddIcon />
+          </button>
+        </Link>
         <SwipeableDrawer
           opened={opened}
           speed={300}
