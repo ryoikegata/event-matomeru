@@ -3,6 +3,7 @@ import { Header } from "@/layout/Header/page";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import { EventBlock } from "@/components/atoms/EventBlock/page";
+import Link from "next/link";
 
 export default function Home() {
   const [select, setSelect] = useState<string>("all");
@@ -65,9 +66,11 @@ export default function Home() {
         <div className="mt-4">
           <EventBlock />
         </div>
-        <button className="absolute right-5 bottom-5 w-16 h-16 rounded-full bg-[#0584c7] text-white shadow-md">
-          <AddIcon />
-        </button>
+        <Link href={'/create'}>
+          <button className="absolute right-5 bottom-5 w-16 h-16 rounded-full bg-[#0584c7] text-white shadow-md">
+            <AddIcon />
+          </button>
+        </Link>
       </main>
     </>
   );
