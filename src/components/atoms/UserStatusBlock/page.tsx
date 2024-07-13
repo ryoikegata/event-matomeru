@@ -6,9 +6,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
 
-
-
-export const UserStatusBlock = ({title}) => {
+export const UserStatusBlock: FC<{title: string}> = ({title}) => {
     const date = [
         {user:"本松達裕"},
         {user:"本松達裕"},
