@@ -18,10 +18,6 @@ export const UserStatusBlock: FC<{title: string}> = ({title}) => {
         <div
         className="border-t-2 border-r-2 border-b-2 border-l-4 border-[#0584c7] py-2 px-4 rounded-lg cursor-pointer"
         >
-        {/* <div className="flex justify-between">
-            <h2>{title}</h2>
-            <div></div>
-        </div> */}
         <Accordion className=" shadow-none">
             <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
