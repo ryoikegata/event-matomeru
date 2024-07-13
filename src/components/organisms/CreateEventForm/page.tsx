@@ -36,7 +36,9 @@ export const CreateEventForm: FC = () => {
           />
         </div>
         <div className="w-full">
-          <label className="font-bold text-xs">イベント詳細</label>
+          <label className="font-bold text-sm">
+            イベント詳細<span className="text-red-500"> *</span>
+          </label>
           <textarea
             name=""
             id=""
