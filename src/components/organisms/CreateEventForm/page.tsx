@@ -1,8 +1,9 @@
-import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EventSchema } from "@/services/schema";
 import { EventType } from "@/services/schema/types";
+import { supabase } from "@/utils/supabase/supabase";
+import { useFetchTenant } from "@/hooks/useFetchTenant";
 
 export const CreateEventForm = () => {
   const {
@@ -13,15 +14,20 @@ export const CreateEventForm = () => {
     resolver: zodResolver(EventSchema),
   });
 
-  const onSubmit = (data: EventType) => {
-    console.log(data);
-  };
+  const { tenant, loading, error } = useFetchTenant();
 
-  // return {
-  //   register,
-  //   onSubmit: handleSubmit(onSubmit),
-  //   errors,
-  // };
+  const onSubmit = async (data: EventType) => {
+    const { data: event, error } = await supabase.from("events").insert({'tenant_id': tenant?.id,...data});
+    let redirectRequired = false;
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(event);
+      redirectRequired = true;
+    }
+    if (redirectRequired) {
+    }
+  };
 
   return (
     <form action="" className="bg-white px-3 pt-4 pb-6" onSubmit={handleSubmit(onSubmit)}>
@@ -35,9 +41,9 @@ export const CreateEventForm = () => {
             type="text"
             placeholder="イベント名を入力してください"
             className="border px-3 py-2 mt-1 w-full rounded"
-            {...register('title', { required: '入力が必須の項目です。' })}
+            {...register('name', { required: '入力が必須の項目です。' })}
           />
-          <p>{errors.title?.message}</p>
+          <p>{errors.name?.message}</p>
         </div>
         <div className="w-full">
           <label className="font-bold text-sm">
@@ -62,6 +68,18 @@ export const CreateEventForm = () => {
             {...register('end_at', { required: '入力が必須の項目です。' })}
           />
           <p>{errors.end_at?.message}</p>
+        </div>
+        <div className="w-full">
+          <label className="font-bold text-sm">
+            募集締切日<span className="text-red-500"> *</span>
+          </label>
+          <input
+            type="datetime-local"
+            placeholder="イベント名を入力してください"
+            className="border px-3 py-2 mt-1 rounded w-full"
+            {...register('exp_at', { required: '入力が必須の項目です。' })}
+          />
+          <p>{errors.exp_at?.message}</p>
         </div>
         <div className="w-full">
           <label className="font-bold text-sm">
