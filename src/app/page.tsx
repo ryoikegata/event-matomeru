@@ -24,7 +24,7 @@ export default function Home() {
     <>
       <Header />
       {/* TODO: データがないときのみjustify-centerをつける */}
-      <main className="flex min-h-screen flex-col px-6">
+      <main className="flex min-h-screen flex-col px-6 mt-20">
         <p className="pt-2 text-lg">ようこそ！ テナント名：本松達裕さん</p>
         <h1 className="flex pt-6 text-3xl font-bold">イベント一覧</h1>
         <div className="flex items-center gap-2 pt-4">
