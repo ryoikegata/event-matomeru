@@ -9,7 +9,6 @@ import { SimpleDialog } from "@/components/organisms/Dialog/page";
 import Link from "next/link";
 
 export default function Home() {
-
   return (
     <>
       <Header />
@@ -26,8 +25,8 @@ export default function Home() {
           </div>
         </div> */}
         <div className="mt-4">
-          <EditableEventBlock
-          />
+          {/* FIXME: 一旦コメントアウト */}
+          {/* <EditableEventBlock /> */}
         </div>
       </main>
     </>
