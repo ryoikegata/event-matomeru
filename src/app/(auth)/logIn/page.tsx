@@ -10,13 +10,13 @@ export default function LogIn() {
       if (event === "SIGNED_IN" && session) {
         const queryParams = new URLSearchParams(window.location.search);
         const tenantId = queryParams.get("tenant_id");
-        const role_id = queryParams.get("role_id");
+        const roleId = Number(queryParams.get("role_id"));
         if (tenantId) {
           await supabase.from("users").upsert({
             uuid: session.user.id,
             email: session.user.email,
             tenant_id: tenantId,
-            role_id: role_id,
+            role_id: roleId,
           });
         }
       }
