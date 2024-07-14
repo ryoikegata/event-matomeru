@@ -39,6 +39,7 @@ export const CreateTenantFormSchema = z.object({
 });
 
 export const EventSchema = z.object({
+  id: z.number(),
   name: z
     .string()
     .max(20, { message: "イベント名は20文字以内に収めてください" }),
@@ -50,4 +51,10 @@ export const EventSchema = z.object({
   description: z
     .string()
     .max(100, { message: "詳細は100文字以内に収めてください" }),
+});
+
+export const CategorySchema = z.object({
+  id: z.number(),
+  tenant_id: z.number(),
+  name: z.string(),
 });
