@@ -13,6 +13,7 @@ import { EventInfo, EventType } from "@/services/schema/types";
 import { map } from "zod";
 import { useFetchEvents } from "@/hooks/useFetchEvents";
 import { useFetchEventInfo } from "@/hooks/useFetchEventInfo";
+import { useFetchTenantByUserId } from "@/hooks/useFetchTenantByUserId";
 
 export default function Home() {
   const [select, setSelect] = useState<string>("all");
@@ -39,7 +40,7 @@ export default function Home() {
   const user = useCheckSession();
   const name = user?.user_metadata.full_name;
 
-  const tenant = useFetchTenant();
+  const tenantByUserId = useFetchTenantByUserId();
 
   const { events } = useFetchEvents();
   return (
@@ -47,7 +48,7 @@ export default function Home() {
       <Header />
       {/* TODO: データがないときのみjustify-centerをつける */}
       <main className="flex min-h-screen flex-col px-6 mt-20">
-        <p className="pt-2 text-lg">{`ようこそ！ ${tenant.tenant?.name}：${name}さん`}</p>
+        <p className="pt-2 text-lg">{`ようこそ！ ${tenantByUserId.tenantByUserId?.name}：${name}さん`}</p>
         <h1 className="flex pt-6 text-3xl font-bold">イベント一覧</h1>
         <div className="flex items-center gap-2 pt-4">
           <button
