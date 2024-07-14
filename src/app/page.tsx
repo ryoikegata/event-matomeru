@@ -135,7 +135,12 @@ export default function Home() {
           easingType="easeOutCubic"
           onClose={() => setOpened(false)}
         >
-          {selectEvent !== null && <AttendForm event={selectEvent} />}
+           {selectEvent !== null && (
+          <AttendForm
+            event={selectEvent}
+            userId={user?.id}
+          />
+           )}
         </SwipeableDrawer>
         <SwipeableDrawer
           opened={openCreateEvent}
