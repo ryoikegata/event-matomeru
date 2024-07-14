@@ -4,7 +4,7 @@ import { formatDate, formatDateTime } from "@/utils/dayjs";
 import React, { FC } from "react";
 
 type Props = {
-  event: EventInfo | null;
+  event: EventInfo;
 };
 export const AttendForm:FC<Props> = ({ event }) => {
   return (
@@ -16,7 +16,7 @@ export const AttendForm:FC<Props> = ({ event }) => {
         <div className="flex justify-between items-end pt-2">
           <div className="flex items-center gap-3">
             <div className="bg-[#0584c7] rounded-sm">
-              <p className="text-xs pt-2 text-white px-2 py-1">{event?.event_category[0]?.category.name}</p>
+              <p className="text-xs pt-2 text-white px-2 py-1">{event?.event_category[0]?.category?.name}</p>
             </div>
           </div>
           <button className="text-sm">{event?.user_event.length}人参加</button>
@@ -24,9 +24,7 @@ export const AttendForm:FC<Props> = ({ event }) => {
       </div>
       <div className="border-b border-[#cccccc]">
         <p className="py-5 text-sm">
-          明日は課題サポート会！
-          新人ハッカソンを全力で駆け抜けるためにも対策をしっかりとしましょう！
-          3期生一同待っています✨
+          {event?.description}
         </p>
       </div>
       <div className="pt-5 flex flex-col gap-2">

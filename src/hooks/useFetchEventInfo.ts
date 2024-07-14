@@ -2,7 +2,7 @@ import { supabase } from "@/utils/supabase/supabase";
 import { use, useEffect, useState } from "react";
 import { CategoryType, EventInfo, EventType, UserType } from "@/services/schema/types";
 
-export const useFetchEventInfo = async (eventId: number): Promise<EventInfo> => {
+export const useFetchEventInfo = async (eventId: number): Promise<EventInfo | null> => {
       try {
         // イベント情報を取得
         const { data: eventData, error: eventError } = await supabase

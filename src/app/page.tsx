@@ -21,14 +21,12 @@ export default function Home() {
   const [openUserList, setOpenUserList] = useState(false);
   const [openCreateEvent, setOpenCreateEvent] = useState(false);
   const [selectEventId, setSelectEventId] = useState<number>(0);
-  const [selectEvent, setSelectEvent] = useState<EventInfo>();
+  const [selectEvent, setSelectEvent] = useState<EventInfo | null>(null);
 
   const handleOpenUserList = useCallback((eventId: number) => {
     setOpenUserList(true);
-    console.log(eventId);
+    setSelectEventId(eventId);
     }, []);
-    
-    
     const handleOpenEvent = async (eventId: number) => {
       setOpened(true);
       setSelectEventId(eventId);
@@ -122,9 +120,11 @@ export default function Home() {
           easingType="easeOutCubic"
           onClose={() => setOpened(false)}
         >
+           {selectEvent !== null && (
           <AttendForm
             event={selectEvent}
           />
+           )}
         </SwipeableDrawer>
         <SwipeableDrawer
           opened={openCreateEvent}
@@ -134,10 +134,13 @@ export default function Home() {
         >
           <CreateEventForm />
         </SwipeableDrawer>
+        {selectEvent !== null && (
         <SimpleDialog
           open={openUserList}
           onClose={() => setOpenUserList(false)}
+          event={selectEvent}
         />
+        )}
       </main>
     </>
   );

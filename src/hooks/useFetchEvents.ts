@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/utils/supabase/supabase";
 import { CategoryType, EventType, UserType } from "@/services/schema/types";
-import useCheckSession from "./useCheckSession";
-import { useFetchTenant } from "./useFetchTenant";
+import { useFetchTenantByUserId } from "./useFetchTenantByUserId";
 
 export const useFetchEvents = () => {
   const [events, setEvents] = useState<EventType[]>();
   const [loading, setLoading] = useState(true);
-  const tenant = useFetchTenant();
-  const tenantId = tenant?.tenant?.id;
+  const tenantByUserId = useFetchTenantByUserId();
+  console.log(tenantByUserId?.tenantByUserId?.id);
 
   useEffect(() => {
     //イベントをテナントidで取得
@@ -25,7 +24,7 @@ export const useFetchEvents = () => {
             category: categories (id, name)
           )
         `)
-        .eq("tenant_id", tenantId);
+        .eq("tenant_id", tenantByUserId?.tenantByUserId?.id);
 
         if (!eventsData) throw new Error("Events not found");
 
@@ -39,7 +38,7 @@ export const useFetchEvents = () => {
       }
     };
     fetchEvents();
-  }, [tenant?.tenant?.id]);
+  }, [tenantByUserId?.tenantByUserId?.id]);
 
   return { events, loading };
 };

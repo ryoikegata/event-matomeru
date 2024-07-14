@@ -17,7 +17,7 @@ export const CategorySchema = z.object({
   id: z.number(),
   name: z.string(),
 });
-export const EventSchema = z.object({
+export const GetEventSchema = z.object({
   id: z.number(),
   name: z.string(),
   tenant_id: z.number(),
