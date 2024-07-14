@@ -5,9 +5,7 @@ import { useFetchUser } from "@/hooks/useCheckUser";
 
 export const Header: FC = () => {
   const you = useFetchUser();
-  console.log(you.you);
-  const userRole = you?.you?.role_id;
-  console.log(userRole);
+  const userRole = you.you?.role_id;
 
   return (
     <header className="fixed top-0 w-full shadow-md px-6 py-4 flex items-center justify-between bg-white">
