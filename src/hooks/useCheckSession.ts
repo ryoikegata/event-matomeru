@@ -18,7 +18,7 @@ const useCheckSession = () => {
     const { data: listener } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (event === "SIGNED_OUT" || !session) {
-          router.push("/login");
+          router.push("/logIn");
         } else {
           setUser(session.user); // セッション更新時にユーザー情報を更新
         }
