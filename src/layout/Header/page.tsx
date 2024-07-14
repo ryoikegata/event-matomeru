@@ -8,9 +8,9 @@ export const Header: FC = () => {
   const userRole = you.you?.role_id;
 
   return (
-    <header className="fixed top-0 w-full shadow-md px-6 py-4 flex items-center justify-between bg-white">
+    <header className="fixed top-0 w-full shadow-md pl-4 pr-6 py-4 flex items-center justify-between bg-white">
       <Link href="/">
-        <Image src="/event-matomeru.svg" alt="Logo" width={280} height={50} />
+        <Image src="/event-matomeru.svg" alt="Logo" width={180} height={50} />
       </Link>
       <div className="flex items-center gap-4">
         {userRole !== 3 ? (
