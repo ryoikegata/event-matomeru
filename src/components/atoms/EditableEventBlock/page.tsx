@@ -1,24 +1,39 @@
+import { EventType } from "@/services/schema/types";
 import Link from "next/link";
+import { FC } from "react";
+import dayjs from "dayjs";
+import { useFetchCategoriesByEvent } from "@/hooks/useFetchCategoriesByEvent";
+import "dayjs/locale/ja";
 
-export const EditableEventBlock = () => {
+type Props = {
+  event: EventType;
+};
+
+export const EditableEventBlock: FC<Props> = ({ event }) => {
+  dayjs.locale("ja");
+  const categoryList = useFetchCategoriesByEvent(event.id);
+  const categories = categoryList.categories;
+  const startDate = dayjs(event.start_at).format("M/D");
+  const startDateKana = dayjs(event.start_at).format("MM月DD日");
+  const startTime = dayjs(event.start_at).format("HH:mm");
+  const endTime = dayjs(event.end_at).format("HH:mm");
+  const day = dayjs().format("ddd");
+
   return (
-    // TODO: 各値はpropsで受け取る
     <div className="border-t-2 border-r-2 border-b-2 border-l-4 border-[#0584c7] py-2 px-4 rounded-lg cursor-pointer flex justify-between">
       <div>
         <div className="flex justify-between">
-          <h2 className="font-semibold">課題サポ 6/24 10:00</h2>
+          <h2 className="font-semibold">{`${event.name} ${startDate} ${startTime}`}</h2>
         </div>
-        <p className="text-sm pt-2">2023年6月24日（水）</p>
-        <p className="text-xs pt-2">10:00-12:00</p>
+        <p className="text-sm pt-2">{`${startDateKana}（${day}）`}</p>
+        <p className="text-xs pt-2">{`${startTime}-${endTime}`}</p>
         <div className="flex justify-between items-end pt-2">
-          {/* TODO: カテゴリの個数によって変更（mapを使う） */}
           <div className="flex items-center gap-3">
-            <div className="bg-[#0584c7] rounded-sm">
-              <p className="text-xs pt-2 text-white px-2 py-1">オンライン</p>
-            </div>
-            <div className="bg-[#0584c7] rounded-sm">
-              <p className="text-xs pt-2 text-white px-2 py-1">機械学習</p>
-            </div>
+            {categories.map((category) => (
+              <div key={category.id} className="bg-[#0584c7] rounded-sm">
+                <p className="text-xs pt-2 text-white px-2 py-1">{`${category.name}`}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
