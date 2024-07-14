@@ -4,9 +4,6 @@ import { EventSchema } from "@/services/schema";
 import { EventType } from "@/services/schema/types";
 import { supabase } from "@/utils/supabase/supabase";
 import { useFetchTenant } from "@/hooks/useFetchTenant";
-import { redirect } from "next/navigation";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
 export const CreateEventForm = () => {
   const {
@@ -17,10 +14,13 @@ export const CreateEventForm = () => {
     resolver: zodResolver(EventSchema),
   });
 
-  const { tenant, loading, error } = useFetchTenant();
+  const { tenant } = useFetchTenant();
+  const tenant_id = tenant?.[0].id;
 
   const onSubmit = async (data: EventType) => {
-    const { data: event, error } = await supabase.from("events").insert({'tenant_id': tenant?.id,...data});
+    const { data: event, error } = await supabase
+      .from("events")
+      .insert({ tenant_id: tenant_id, ...data });
     if (error) {
       console.log(error);
     } else {
@@ -30,7 +30,11 @@ export const CreateEventForm = () => {
   };
 
   return (
-    <form action="" className="bg-white px-3 pt-4 pb-6" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      action=""
+      className="bg-white px-3 pt-4 pb-6"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <h1 className="flex pt-6 text-xl font-bold">イベント作成</h1>
       <div className="flex flex-col items-center gap-4 pt-4">
         <div className="w-full">
@@ -41,7 +45,7 @@ export const CreateEventForm = () => {
             type="text"
             placeholder="イベント名を入力してください"
             className="border px-3 py-2 mt-1 w-full rounded"
-            {...register('name', { required: '入力が必須の項目です。' })}
+            {...register("name", { required: "入力が必須の項目です。" })}
           />
           <p>{errors.name?.message}</p>
         </div>
@@ -53,7 +57,7 @@ export const CreateEventForm = () => {
             type="datetime-local"
             placeholder="イベント名を入力してください"
             className="border px-3 py-2 mt-1 rounded w-full"
-            {...register('start_at', { required: '入力が必須の項目です。',  })}
+            {...register("start_at", { required: "入力が必須の項目です。" })}
           />
           <p>{errors.start_at?.message}</p>
         </div>
@@ -65,7 +69,7 @@ export const CreateEventForm = () => {
             type="datetime-local"
             placeholder="イベント名を入力してください"
             className="border px-3 py-2 mt-1 rounded w-full"
-            {...register('end_at', { required: '入力が必須の項目です。' })}
+            {...register("end_at", { required: "入力が必須の項目です。" })}
           />
           <p>{errors.end_at?.message}</p>
         </div>
@@ -77,7 +81,7 @@ export const CreateEventForm = () => {
             type="datetime-local"
             placeholder="イベント名を入力してください"
             className="border px-3 py-2 mt-1 rounded w-full"
-            {...register('exp_at', { required: '入力が必須の項目です。' })}
+            {...register("exp_at", { required: "入力が必須の項目です。" })}
           />
           <p>{errors.exp_at?.message}</p>
         </div>
@@ -90,7 +94,7 @@ export const CreateEventForm = () => {
             placeholder="イベントの詳細を入力してください"
             className="border px-3 py-2 mt-1 rounded w-full resize-none"
             rows={7}
-            {...register('description', { required: '入力が必須の項目です。' })}
+            {...register("description", { required: "入力が必須の項目です。" })}
           ></textarea>
           <p>{errors.description?.message}</p>
         </div>
