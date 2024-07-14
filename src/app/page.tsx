@@ -110,7 +110,7 @@ export default function Home() {
           ))}
         <button
           onClick={() => setOpenCreateEvent(true)}
-          className="absolute right-5 bottom-5 w-16 h-16 rounded-full bg-[#0584c7] text-white shadow-md"
+          className=" fixed right-5 bottom-5 w-16 h-16 rounded-full bg-[#0584c7] text-white shadow-md"
         >
           <AddIcon />
         </button>
