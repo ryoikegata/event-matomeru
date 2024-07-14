@@ -30,7 +30,7 @@ export const TenantHeader: FC = () => {
     return (
         <header className="fixed top-0 w-full shadow-md px-6 py-4 flex items-center justify-between bg-white">
         <Link href={'/'}>
-            <Image src="/logo.svg" alt="Logo" width={140} height={50} />
+            <Image src="/event-matomeru.svg" alt="Logo" width={280} height={50} />
         </Link>
         <div>
         <IconButton

@@ -1,13 +1,18 @@
 "use client";
 import { Header } from "@/layout/Header/page";
 import AddIcon from "@mui/icons-material/Add";
-import { useCallback, useState } from "react";
+import { use, useCallback, useEffect, useState } from "react";
 import { EventBlock } from "@/components/atoms/EventBlock/page";
 import { SwipeableDrawer } from "@/components/organisms/SwipeableDrawer/page";
 import { AttendForm } from "@/components/organisms/AttendForm/page";
 import { SimpleDialog } from "@/components/organisms/Dialog/page";
 import { CreateEventForm } from "@/components/organisms/CreateEventForm/page";
 import useCheckSession from "@/hooks/useCheckSession";
+import { useFetchTenant } from "@/hooks/useFetchTenant";
+import { EventInfo, EventType } from "@/services/schema/types";
+import { map } from "zod";
+import { useFetchEvents } from "@/hooks/useFetchEvents";
+import { useFetchEventInfo } from "@/hooks/useFetchEventInfo";
 import { useFetchTenantByUserId } from "@/hooks/useFetchTenantByUserId";
 
 export default function Home() {
@@ -15,19 +20,27 @@ export default function Home() {
   const [opened, setOpened] = useState(false);
   const [openUserList, setOpenUserList] = useState(false);
   const [openCreateEvent, setOpenCreateEvent] = useState(false);
+  const [selectEventId, setSelectEventId] = useState<number>(0);
+  const [selectEvent, setSelectEvent] = useState<EventInfo | null>(null);
 
-  const handleOpenUserList = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      event.stopPropagation();
-      setOpenUserList(true);
-    },
-    []
-  );
-
+  const handleOpenUserList = useCallback((eventId: number) => {
+    setOpenUserList(true);
+    setSelectEventId(eventId);
+    }, []);
+    const handleOpenEvent = async (eventId: number) => {
+      setOpened(true);
+      setSelectEventId(eventId);
+      const event = await useFetchEventInfo(eventId);
+      setSelectEvent(event);
+      console.log(event);
+    };
+    // const event = useFetchEventInfo(eventId);
   const user = useCheckSession();
   const name = user?.user_metadata.full_name;
 
   const tenantByUserId = useFetchTenantByUserId();
+
+  const { events } = useFetchEvents();
 
   return (
     <>
@@ -78,23 +91,28 @@ export default function Home() {
             未回答
           </button>
         </div>
-        {/* TODO: データを取得したらコメントアウト解除 */}
-        {/* <div className="flex flex-1 w-full -mt-[152px] items-center justify-center">
+        {events?.length === 0 && (
+        <div className="flex flex-1 w-full -mt-[152px] items-center justify-center">
           <div className="text-[#808080] text-center">
             <p className="font-semibold text-2xl">NO EVENT</p>
             <p className="font-semibold text-2xl">NO LIFE</p>
             <p className="pt-4">イベントを作成しましょう！</p>
           </div>
-        </div> */}
-        <div className="mt-4">
-          <EventBlock
-            onClick={() => setOpened(true)}
-            handleOpenUserList={handleOpenUserList}
-          />
         </div>
+          )}
+          {events?.map((event:EventType) => (
+        <div className="mt-4" key={event.id}>
+            <EventBlock
+              onClick={() => handleOpenEvent(event.id)}
+              handleOpenUserList={handleOpenUserList}
+              event={event}
+              userId={user?.id}
+            />
+        </div>
+          ))}
         <button
           onClick={() => setOpenCreateEvent(true)}
-          className="absolute right-5 bottom-5 w-16 h-16 rounded-full bg-[#0584c7] text-white shadow-md"
+          className=" fixed right-5 bottom-5 w-16 h-16 rounded-full bg-[#0584c7] text-white shadow-md"
         >
           <AddIcon />
         </button>
@@ -104,7 +122,11 @@ export default function Home() {
           easingType="easeOutCubic"
           onClose={() => setOpened(false)}
         >
-          <AttendForm />
+           {selectEvent !== null && (
+          <AttendForm
+            event={selectEvent}
+          />
+           )}
         </SwipeableDrawer>
         <SwipeableDrawer
           opened={openCreateEvent}
@@ -114,10 +136,13 @@ export default function Home() {
         >
           <CreateEventForm />
         </SwipeableDrawer>
+        {selectEvent !== null && (
         <SimpleDialog
           open={openUserList}
           onClose={() => setOpenUserList(false)}
+          event={selectEvent}
         />
+        )}
       </main>
     </>
   );
