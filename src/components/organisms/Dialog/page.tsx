@@ -12,9 +12,10 @@ type Props = {
 };
 
 export const SimpleDialog: FC<Props> = ({ open, onClose }) => {
+  // const {attendUsers, attendUsersLength} = useAttendUserByEventId(event?.id);
   return (
     <Dialog onClose={onClose} open={open}>
-      <DialogTitle>参加者一覧（12人）</DialogTitle>
+      <DialogTitle>参加者一覧（人）</DialogTitle>
       <List sx={{ pt: 0 }}>
         {users.map((user) => (
           <ListItem disableGutters key={user} sx={{ px: 3 }}>

@@ -1,7 +1,7 @@
 "use client";
 import { Header } from "@/layout/Header/page";
 import AddIcon from "@mui/icons-material/Add";
-import { useCallback, useState } from "react";
+import { use, useCallback, useEffect, useState } from "react";
 import { EventBlock } from "@/components/atoms/EventBlock/page";
 import { SwipeableDrawer } from "@/components/organisms/SwipeableDrawer/page";
 import { AttendForm } from "@/components/organisms/AttendForm/page";
@@ -9,26 +9,39 @@ import { SimpleDialog } from "@/components/organisms/Dialog/page";
 import { CreateEventForm } from "@/components/organisms/CreateEventForm/page";
 import useCheckSession from "@/hooks/useCheckSession";
 import { useFetchTenant } from "@/hooks/useFetchTenant";
+import { EventInfo, EventType } from "@/services/schema/types";
+import { map } from "zod";
+import { useFetchEvents } from "@/hooks/useFetchEvents";
+import { useFetchEventInfo } from "@/hooks/useFetchEventInfo";
 
 export default function Home() {
   const [select, setSelect] = useState<string>("all");
   const [opened, setOpened] = useState(false);
   const [openUserList, setOpenUserList] = useState(false);
   const [openCreateEvent, setOpenCreateEvent] = useState(false);
+  const [selectEventId, setSelectEventId] = useState<number>(0);
+  const [selectEvent, setSelectEvent] = useState<EventInfo>();
 
-  const handleOpenUserList = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      event.stopPropagation();
-      setOpenUserList(true);
-    },
-    []
-  );
-
+  const handleOpenUserList = useCallback((eventId: number) => {
+    setOpenUserList(true);
+    console.log(eventId);
+    }, []);
+    
+    
+    const handleOpenEvent = async (eventId: number) => {
+      setOpened(true);
+      setSelectEventId(eventId);
+      const event = await useFetchEventInfo(eventId);
+      setSelectEvent(event);
+      console.log(event);
+    };
+    // const event = useFetchEventInfo(eventId);
   const user = useCheckSession();
   const name = user?.user_metadata.full_name;
 
   const tenant = useFetchTenant();
 
+  const { events } = useFetchEvents();
   return (
     <>
       <Header />
@@ -86,12 +99,15 @@ export default function Home() {
             <p className="pt-4">イベントを作成しましょう！</p>
           </div>
         </div> */}
-        <div className="mt-4">
-          <EventBlock
-            onClick={() => setOpened(true)}
-            handleOpenUserList={handleOpenUserList}
-          />
+          {events?.map((event:EventType) => (
+        <div className="mt-4" key={event.id}>
+            <EventBlock
+              onClick={() => handleOpenEvent(event.id)}
+              handleOpenUserList={handleOpenUserList}
+              event={event}
+            />
         </div>
+          ))}
         <button
           onClick={() => setOpenCreateEvent(true)}
           className="absolute right-5 bottom-5 w-16 h-16 rounded-full bg-[#0584c7] text-white shadow-md"
@@ -104,7 +120,9 @@ export default function Home() {
           easingType="easeOutCubic"
           onClose={() => setOpened(false)}
         >
-          <AttendForm />
+          <AttendForm
+            event={selectEvent}
+          />
         </SwipeableDrawer>
         <SwipeableDrawer
           opened={openCreateEvent}
