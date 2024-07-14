@@ -1,15 +1,39 @@
+'use client';
 import { FC } from "react";
 import Image from "next/image";
 import { EventType } from "@/services/schema/types";
 import { formatDate, formatDateTime } from "@/utils/dayjs";
+import { useUserEventAttend } from "@/hooks/useUserEventAttend";
 
 type Props = {
   onClick: () => void;
   handleOpenUserList: (eventId:number) => void;
   event: EventType;
+  userId: string | undefined;
 };
 
-export const EventBlock: FC<Props> = ({ onClick, handleOpenUserList, event }) => {
+export const EventBlock: FC<Props> = ({ onClick, handleOpenUserList, event, userId }) => {
+
+  const userEventAttend = useUserEventAttend(event.id, userId);
+
+  const attendStatus = () => {
+    if (userEventAttend.userEventAttend) {
+     return <div className="flex items-center gap-1">
+      <Image src="/attend-check-icon.svg" alt="" width={20} height={20} />
+      <span className="text-[#21c702] text-xs">参加</span>
+    </div>;
+    } else if (userEventAttend.userEventAttend === null) {
+      return <div className="flex items-center gap-1">
+      <Image src="/notAnswer-check-icon.svg" alt="" width={20} height={20} />
+      <span className="text-[#808080] text-xs">未回答</span>
+    </div>;
+    } else if (!userEventAttend.userEventAttend) {
+      return <div className="flex items-center gap-1">
+      <Image src="/notAttend-check-icon.svg" alt="" width={20} height={20} />
+      <span className="text-[#C74502] text-xs">不参加</span>
+    </div>;
+    }
+  };
   return (
     // TODO: 各値はpropsで受け取る
     <div
@@ -18,10 +42,7 @@ export const EventBlock: FC<Props> = ({ onClick, handleOpenUserList, event }) =>
     >
       <div className="flex justify-between">
         <h2 className="font-semibold">{event.name}</h2>
-        <div className="flex items-center gap-1">
-          <Image src="/attend-check-icon.svg" alt="" width={20} height={20} />
-          <span className="text-[#21c702] text-xs">参加</span>
-        </div>
+        {attendStatus()}
       </div>
       <p className="text-sm pt-2">{formatDate(event.start_at)}</p>
       <p className="text-xs pt-2">{formatDateTime(event.start_at)}-{formatDateTime(event.end_at)}</p>
