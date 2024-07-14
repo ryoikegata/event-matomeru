@@ -125,6 +125,7 @@ export default function Home() {
            {selectEvent !== null && (
           <AttendForm
             event={selectEvent}
+            userId={user?.id}
           />
            )}
         </SwipeableDrawer>

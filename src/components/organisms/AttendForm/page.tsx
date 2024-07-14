@@ -1,14 +1,29 @@
+import { updateUserEventAttend } from "@/hooks/updateUserEventAttend";
 import { useFetchEventInfo } from "@/hooks/useFetchEventInfo";
 import { EventInfo, EventType } from "@/services/schema/types";
 import { formatDate, formatDateTime } from "@/utils/dayjs";
+import { useRouter } from "next/router";
 import React, { FC } from "react";
+import { useForm } from "react-hook-form";
 
 type Props = {
   event: EventInfo;
+  userId: string | undefined;
 };
-export const AttendForm:FC<Props> = ({ event }) => {
+
+type AttendFormType = {
+  is_attend: boolean;
+};
+export const AttendForm:FC<Props> = ({ event, userId }) => {
+  const { handleSubmit, setValue } = useForm<AttendFormType>();
+
+
+  const onSubmit = async (data: AttendFormType) => {
+    await updateUserEventAttend(userId, event?.id, data.is_attend);
+  };
+
   return (
-    <form action="" className="bg-white px-3 pt-4 pb-6">
+    <form action="" onSubmit={handleSubmit(onSubmit)} className="bg-white px-3 pt-4 pb-6">
       <div className="pb-3 border-b border-[#cccccc]">
         <p className="font-semibold">{event?.name}</p>
         <p className="text-sm pt-2">{formatDate(event?.start_at)}</p>
@@ -36,10 +51,10 @@ export const AttendForm:FC<Props> = ({ event }) => {
         </div>
       </div>
       <div className="pt-4 flex items-center gap-2">
-        <button className="w-1/2 border border-[#c74502] text-[#c74502] rounded-full px-4 py-1">
+        <button type="submit" className="w-1/2 border border-[#c74502] text-[#c74502] rounded-full px-4 py-1" onClick={() => setValue("is_attend", false)}>
           不参加
         </button>
-        <button className="w-1/2 border border-[#21c702] text-[#21c702] rounded-full px-4 py-1">
+        <button type="submit" className="w-1/2 border border-[#21c702] text-[#21c702] rounded-full px-4 py-1" onClick={() => setValue("is_attend", true)}>
           参加
         </button>
       </div>
