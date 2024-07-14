@@ -13,6 +13,27 @@ export const UserSchema = z.object({
   role_id: z.number(),
 });
 
+export const CategorySchema = z.object({
+  id: z.number(),
+  tenant_id: z.number(),
+  name: z.string(),
+});
+
+export const GetEventSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  tenant_id: z.number(),
+  start_at: z.string(),
+  end_at: z.string(),
+  exp_at: z.string(),
+  description: z.string(),
+  event_category: z.object({
+    0: z.object({
+      category: CategorySchema,
+    }),
+  }),
+});
+
 export const CreateTenantFormSchema = z.object({
   name: z.string().min(1, "テナント名は必須です"),
   email: z.string().min(1, "メールアドレスは必須です"),
@@ -32,10 +53,4 @@ export const EventSchema = z.object({
   description: z
     .string()
     .max(100, { message: "詳細は100文字以内に収めてください" }),
-});
-
-export const CategorySchema = z.object({
-  id: z.number(),
-  tenant_id: z.number(),
-  name: z.string(),
 });
