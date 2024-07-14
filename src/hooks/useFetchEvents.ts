@@ -7,7 +7,6 @@ export const useFetchEvents = () => {
   const [events, setEvents] = useState<EventType[]>();
   const [loading, setLoading] = useState(true);
   const tenantByUserId = useFetchTenantByUserId();
-  console.log(tenantByUserId?.tenantByUserId?.id);
 
   useEffect(() => {
     //イベントをテナントidで取得

@@ -41,6 +41,7 @@ export default function Home() {
   const tenantByUserId = useFetchTenantByUserId();
 
   const { events } = useFetchEvents();
+
   return (
     <>
       <Header />
@@ -105,6 +106,7 @@ export default function Home() {
               onClick={() => handleOpenEvent(event.id)}
               handleOpenUserList={handleOpenUserList}
               event={event}
+              userId={user?.id}
             />
         </div>
           ))}
