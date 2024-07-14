@@ -91,14 +91,15 @@ export default function Home() {
             未回答
           </button>
         </div>
-        {/* TODO: データを取得したらコメントアウト解除 */}
-        {/* <div className="flex flex-1 w-full -mt-[152px] items-center justify-center">
+        {events?.length === 0 && (
+        <div className="flex flex-1 w-full -mt-[152px] items-center justify-center">
           <div className="text-[#808080] text-center">
             <p className="font-semibold text-2xl">NO EVENT</p>
             <p className="font-semibold text-2xl">NO LIFE</p>
             <p className="pt-4">イベントを作成しましょう！</p>
           </div>
-        </div> */}
+        </div>
+          )}
           {events?.map((event:EventType) => (
         <div className="mt-4" key={event.id}>
             <EventBlock

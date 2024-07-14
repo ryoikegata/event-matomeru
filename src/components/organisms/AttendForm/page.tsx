@@ -16,7 +16,7 @@ export const AttendForm:FC<Props> = ({ event }) => {
         <div className="flex justify-between items-end pt-2">
           <div className="flex items-center gap-3">
             <div className="bg-[#0584c7] rounded-sm">
-              <p className="text-xs pt-2 text-white px-2 py-1">{event?.event_category[0].category.name}</p>
+              <p className="text-xs pt-2 text-white px-2 py-1">{event?.event_category[0]?.category.name}</p>
             </div>
           </div>
           <button className="text-sm">{event?.user_event.length}人参加</button>
