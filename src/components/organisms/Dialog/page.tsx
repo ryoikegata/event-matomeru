@@ -19,9 +19,9 @@ export const SimpleDialog: FC<Props> = ({ open, onClose, event }) => {
     <Dialog onClose={onClose} open={open}>
       <DialogTitle>参加者一覧（人）</DialogTitle>
       <List sx={{ pt: 0 }}>
-        {users.map((user) => (
-          <ListItem disableGutters key={user} sx={{ px: 3 }}>
-            <p className="text-sm">{user}</p>
+        {event.user_event.map((userEvent, index) => (
+          <ListItem disableGutters key={index} sx={{ px: 3 }}>
+            <p className="text-sm">{userEvent.user.name}</p>
           </ListItem>
         ))}
       </List>
