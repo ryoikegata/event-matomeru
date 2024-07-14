@@ -1,7 +1,7 @@
 "use client";
 import { Header } from "@/layout/Header/page";
 import AddIcon from "@mui/icons-material/Add";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { EventBlock } from "@/components/atoms/EventBlock/page";
 import { SwipeableDrawer } from "@/components/organisms/SwipeableDrawer/page";
 import { AttendForm } from "@/components/organisms/AttendForm/page";
@@ -23,17 +23,31 @@ export default function Home() {
 
   const { event } = useFetchEventInfo(selectEventId);
 
-  const handleOpenEvent = async (eventId: number) => {
-    setOpened(true);
-    setSelectEventId(eventId);
-    setSelectEvent(event);
-    console.log(event);
-  };
+  const handleOpenEvent = useCallback(
+    (eventId: number) => {
+      setOpened(true);
+      setSelectEventId(eventId);
+      setSelectEvent(event);
+    },
+    [setOpened, setSelectEventId, setSelectEvent, event]
+  );
 
-  const handleOpenUserList = useCallback((eventId: number) => {
-    setOpenUserList(true);
-    setSelectEventId(eventId);
-  }, []);
+  useEffect(() => {
+    if (selectEventId) {
+      setSelectEvent(event);
+      console.log(event);
+    }
+  }, [selectEventId, event]);
+
+  const handleOpenUserList = useCallback(
+    (eventId: number, e: React.MouseEvent) => {
+      e.stopPropagation();
+      setOpenUserList(true);
+      setSelectEventId(eventId);
+    },
+    [setOpenUserList, setSelectEventId]
+  );
+
   const user = useCheckSession();
   const name = user?.user_metadata.full_name;
 

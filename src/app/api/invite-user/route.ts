@@ -22,8 +22,12 @@ export async function POST(req: Request) {
       {
         data: {
           name: "",
+          tenant_id,
+          role_id: Number(role_id),
         },
-        redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/login?tenant_id=${tenant_id}&role_id=${role_id}`,
+        redirectTo: `${
+          process.env.NEXT_PUBLIC_BASE_URL
+        }/login?tenant_id=${tenant_id}&role_id=${Number(role_id)}`,
       }
     );
 

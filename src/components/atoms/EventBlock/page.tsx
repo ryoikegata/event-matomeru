@@ -8,7 +8,7 @@ import { useFetchCategoriesByEvent } from "@/hooks/useFetchCategoriesByEvent";
 
 type Props = {
   onClick: () => void;
-  handleOpenUserList: (eventId: number) => void;
+  handleOpenUserList: (eventId: number, e: React.MouseEvent) => void;
   event: EventType;
   userId: string | undefined;
 };
@@ -85,7 +85,7 @@ export const EventBlock: FC<Props> = ({
 
         <button
           className="text-xs underline"
-          onClick={() => handleOpenUserList(event.id)}
+          onClick={(e) => handleOpenUserList(event.id, e)}
         >
           参加者一覧を見る
         </button>
