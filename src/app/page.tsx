@@ -1,16 +1,14 @@
 "use client";
 import { Header } from "@/layout/Header/page";
 import AddIcon from "@mui/icons-material/Add";
-import { use, useCallback, useEffect, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { EventBlock } from "@/components/atoms/EventBlock/page";
 import { SwipeableDrawer } from "@/components/organisms/SwipeableDrawer/page";
 import { AttendForm } from "@/components/organisms/AttendForm/page";
 import { SimpleDialog } from "@/components/organisms/Dialog/page";
 import { CreateEventForm } from "@/components/organisms/CreateEventForm/page";
 import useCheckSession from "@/hooks/useCheckSession";
-import { useFetchTenant } from "@/hooks/useFetchTenant";
 import { EventInfo, EventType } from "@/services/schema/types";
-import { map } from "zod";
 import { useFetchEvents } from "@/hooks/useFetchEvents";
 import { useFetchEventInfo } from "@/hooks/useFetchEventInfo";
 import { useFetchTenantByUserId } from "@/hooks/useFetchTenantByUserId";
@@ -23,18 +21,33 @@ export default function Home() {
   const [selectEventId, setSelectEventId] = useState<number>(0);
   const [selectEvent, setSelectEvent] = useState<EventInfo | null>(null);
 
-  const handleOpenUserList = useCallback((eventId: number) => {
-    setOpenUserList(true);
-    setSelectEventId(eventId);
-    }, []);
-    const handleOpenEvent = async (eventId: number) => {
+  const { event } = useFetchEventInfo(selectEventId);
+
+  const handleOpenEvent = useCallback(
+    (eventId: number) => {
       setOpened(true);
       setSelectEventId(eventId);
-      const event = await useFetchEventInfo(eventId);
+      setSelectEvent(event);
+    },
+    [setOpened, setSelectEventId, setSelectEvent, event]
+  );
+
+  useEffect(() => {
+    if (selectEventId) {
       setSelectEvent(event);
       console.log(event);
-    };
-    // const event = useFetchEventInfo(eventId);
+    }
+  }, [selectEventId, event]);
+
+  const handleOpenUserList = useCallback(
+    (eventId: number, e: React.MouseEvent) => {
+      e.stopPropagation();
+      setOpenUserList(true);
+      setSelectEventId(eventId);
+    },
+    [setOpenUserList, setSelectEventId]
+  );
+
   const user = useCheckSession();
   const name = user?.user_metadata.full_name;
 
@@ -92,24 +105,24 @@ export default function Home() {
           </button>
         </div>
         {events?.length === 0 && (
-        <div className="flex flex-1 w-full -mt-[152px] items-center justify-center">
-          <div className="text-[#808080] text-center">
-            <p className="font-semibold text-2xl">NO EVENT</p>
-            <p className="font-semibold text-2xl">NO LIFE</p>
-            <p className="pt-4">イベントを作成しましょう！</p>
+          <div className="flex flex-1 w-full -mt-[152px] items-center justify-center">
+            <div className="text-[#808080] text-center">
+              <p className="font-semibold text-2xl">NO EVENT</p>
+              <p className="font-semibold text-2xl">NO LIFE</p>
+              <p className="pt-4">イベントを作成しましょう！</p>
+            </div>
           </div>
-        </div>
-          )}
-          {events?.map((event:EventType) => (
-        <div className="mt-4" key={event.id}>
+        )}
+        {events?.map((event: EventType) => (
+          <div className="mt-4" key={event.id}>
             <EventBlock
               onClick={() => handleOpenEvent(event.id)}
               handleOpenUserList={handleOpenUserList}
               event={event}
               userId={user?.id}
             />
-        </div>
-          ))}
+          </div>
+        ))}
         <button
           onClick={() => setOpenCreateEvent(true)}
           className=" fixed right-5 bottom-5 w-16 h-16 rounded-full bg-[#0584c7] text-white shadow-md"
@@ -138,11 +151,11 @@ export default function Home() {
           <CreateEventForm />
         </SwipeableDrawer>
         {selectEvent !== null && (
-        <SimpleDialog
-          open={openUserList}
-          onClose={() => setOpenUserList(false)}
-          event={selectEvent}
-        />
+          <SimpleDialog
+            open={openUserList}
+            onClose={() => setOpenUserList(false)}
+            event={selectEvent}
+          />
         )}
       </main>
     </>
